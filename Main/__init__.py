@@ -11,13 +11,14 @@ key = "api-key=bc6f4a013b593ac80ff7f31de9c52b80:11:74279314"
 begin_date = "begin_date=20160217"
 end_date = "end_date=20160224"
 
-count = 1
+count = 758
 
 days = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
-url = prefix + "?&" + fq + "&" + "sort=oldest" + "&" + page + str(1) + "&" + key
-resp = requests.get(url)
-oldest_year = (resp.json()["response"]["docs"][0]["pub_date"])[0:4]
+# url = prefix + "?&" + fq + "&" + "sort=oldest" + "&" + page + str(1) + "&" + key
+# resp = requests.get(url)
+# oldest_year = (resp.json()["response"]["docs"][0]["pub_date"])[0:4]
+oldest_year = 1858
 current_year = datetime.date.today().strftime('%Y')
 current_date = ((datetime.date.today() + datetime.timedelta(days=1)).strftime('%Y%m%d'))
 with open("stats.csv", "a") as stats:
@@ -50,7 +51,9 @@ for year in range(int(oldest_year), int(current_year) + 1):
             if (pages > 0):
                 print("Number of pages = " + str(pages))
             with open("stats.csv", "a") as stats:
-                stats.write(str(year) + str(mon) + str(bd) + "," + str(year) + str(mon) + str(ed) + "," + str(hits) + "," + str(pages)+"\n")
+                stats.write(
+                    str(year) + str(mon) + str(bd) + "," + str(year) + str(mon) + str(ed) + "," + str(hits) + "," + str(
+                        pages) + "\n")
             for i in range(0, pages):
                 url = prefix + "?&" + fq + "&" + sort + "&" + begin_date + "&" + end_date + "&" + page + str(
                     i) + "&" + key
@@ -60,4 +63,4 @@ for year in range(int(oldest_year), int(current_year) + 1):
                 print("Writing to file: news_desk_health_" + str(count) + ".json")
                 print("Page = " + str(i) + " done")
                 count += 1
-                time.sleep(30)
+                time.sleep(60)
