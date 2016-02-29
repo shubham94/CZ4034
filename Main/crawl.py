@@ -3,11 +3,14 @@ import json
 import requests
 import datetime
 
+STATS_FILE_NAME = "stats_health.csv"
+JSON_FILE_NAME = "news_desk_health"
 prefix = "http://api.nytimes.com/svc/search/v2/articlesearch.json"
 fq = "fq=news_desk:(\"Health\")"
 sort = "sort=newest"
 page = "page="
-key = "api-key=bc6f4a013b593ac80ff7f31de9c52b80:11:74279314"
+# key = "api-key=bc6f4a013b593ac80ff7f31de9c52b80:11:74279314"
+key = "api-key=a52da62103b0deaf1a70d42c8ae09038:2:74279314"
 begin_date = "begin_date=20160217"
 end_date = "end_date=20160224"
 
@@ -25,7 +28,7 @@ oldest_year = (resp.json()["response"]["docs"][0]["pub_date"])[0:4]
 current_year = datetime.date.today().strftime('%Y')
 current_date = ((datetime.date.today() + datetime.timedelta(days=0)).strftime('%Y%m%d'))
 
-with open("stats_health.csv", "w") as stats:
+with open(STATS_FILE_NAME, "w") as stats:
     stats.write("Begin Date, End Date, Hits, Pages\n")
 for year in range(int(newest_year), int(oldest_year) - 1, -1):
     for month in range(1, 13):
@@ -58,7 +61,7 @@ for year in range(int(newest_year), int(oldest_year) - 1, -1):
                 pages += 1
             if (pages > 0):
                 print("Number of pages = " + str(pages))
-            with open("stats.csv", "a") as stats:
+            with open(STATS_FILE_NAME, "a") as stats:
                 stats.write(
                     str(year) + str(mon) + str(bd) + "," + str(year) + str(mon) + str(ed) + "," + str(hits) + "," + str(
                         pages) + "\n")
@@ -66,7 +69,7 @@ for year in range(int(newest_year), int(oldest_year) - 1, -1):
                 url = prefix + "?&" + fq + "&" + sort + "&" + begin_date + "&" + end_date + "&" + page + str(
                     i) + "&" + key
                 resp = requests.get(url)
-                with open("../jsonFiles/news_desk_health_" + str(count) + ".json", 'w') as jsonFile:
+                with open("../jsonFiles/" + JSON_FILE_NAME + str(count) + ".json", 'w') as jsonFile:
                     json.dump(resp.json(), jsonFile)
                 print("Writing to file: news_desk_health_" + str(count) + ".json")
                 print("Page = " + str(i) + " done")
