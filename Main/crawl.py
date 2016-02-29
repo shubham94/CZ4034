@@ -5,8 +5,9 @@ import datetime
 
 STATS_FILE_NAME = "stats_health.csv"
 JSON_FILE_NAME = "news_desk_health"
+
 prefix = "http://api.nytimes.com/svc/search/v2/articlesearch.json"
-fq = "fq=news_desk:(\"Health\")"
+fq = "fq=news_desk:(\"Men%27s+Health\")"
 sort = "sort=newest"
 page = "page="
 # key = "api-key=bc6f4a013b593ac80ff7f31de9c52b80:11:74279314"
@@ -24,7 +25,6 @@ newest_year = (resp.json()["response"]["docs"][0]["pub_date"])[0:4]
 url = prefix + "?&" + fq + "&" + "sort=oldest" + "&" + page + str(0) + "&" + key
 resp = requests.get(url)
 oldest_year = (resp.json()["response"]["docs"][0]["pub_date"])[0:4]
-
 current_year = datetime.date.today().strftime('%Y')
 current_date = ((datetime.date.today() + datetime.timedelta(days=0)).strftime('%Y%m%d'))
 
