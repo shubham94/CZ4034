@@ -23,7 +23,7 @@ current_date = ((datetime.date.today() + datetime.timedelta(days=0)).strftime('%
 
 with open("stats.csv", "w") as stats:
     stats.write("Begin Date, End Date, Hits, Pages\n")
-for year in range(2016,2015,-1):
+for year in range(int(newest_year),2000,-1):
     for month in range(1, 13):
         for date in range(1, days[month - 1]+1, 7):
             mon = month
