@@ -7,7 +7,7 @@ STATS_FILE_NAME = "stats_health.csv"
 JSON_FILE_NAME = "news_desk_health"
 
 prefix = "http://api.nytimes.com/svc/search/v2/articlesearch.json"
-fq = "fq=news_desk:(\"Men%27s+Health\")"
+fq = "fq=news_desk:(\"health\")"
 sort = "sort=newest"
 page = "page="
 # key = "api-key=bc6f4a013b593ac80ff7f31de9c52b80:11:74279314"
@@ -52,7 +52,7 @@ for year in range(int(newest_year), int(oldest_year) - 1, -1):
                 continue
             if (end_date[9:] > current_date):
                 end_date = current_date
-            url = prefix + "?&" + fq + "&" + sort + "&" + begin_date + "&" + end_date + "&" + page + "1" + "&" + key
+            url = prefix + "?&" + fq + "&" + sort + "&" + begin_date + "&" + end_date + "&" + page + "0" + "&" + key
             print(url)
             resp = requests.get(url)
             hits = resp.json()["response"]["meta"]["hits"]
@@ -74,4 +74,4 @@ for year in range(int(newest_year), int(oldest_year) - 1, -1):
                 print("Writing to file: news_desk_health_" + str(count) + ".json")
                 print("Page = " + str(i) + " done")
                 count += 1
-                time.sleep(10)
+                time.sleep(30)
