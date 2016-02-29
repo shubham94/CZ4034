@@ -21,7 +21,7 @@ newest_year = (resp.json()["response"]["docs"][0]["pub_date"])[0:4]
 current_year = datetime.date.today().strftime('%Y')
 current_date = ((datetime.date.today() + datetime.timedelta(days=0)).strftime('%Y%m%d'))
 
-with open("stats.csv", "a") as stats:
+with open("stats.csv", "w") as stats:
     stats.write("Begin Date, End Date, Hits, Pages\n")
 for year in range(2016,2015,-1):
     for month in range(1, 13):
