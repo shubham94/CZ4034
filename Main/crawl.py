@@ -3,11 +3,11 @@ import json
 import requests
 import datetime
 
-STATS_FILE_NAME = "stats_health.csv"
-JSON_FILE_NAME = "news_desk_health"
+STATS_FILE_NAME = "stats_womens_health.csv"
+JSON_FILE_NAME = "news_desk_womens_health"
 
 prefix = "http://api.nytimes.com/svc/search/v2/articlesearch.json"
-fq = "fq=news_desk:(\"Men%27s+Health\")"
+fq = "fq=news_desk:(\"Women%27s+Health\")"
 sort = "sort=newest"
 page = "page="
 # key = "api-key=bc6f4a013b593ac80ff7f31de9c52b80:11:74279314"
@@ -71,7 +71,7 @@ for year in range(int(newest_year), int(oldest_year) - 1, -1):
                 resp = requests.get(url)
                 with open("../jsonFiles/" + JSON_FILE_NAME + str(count) + ".json", 'w') as jsonFile:
                     json.dump(resp.json(), jsonFile)
-                print("Writing to file: news_desk_health_" + str(count) + ".json")
+                print("Writing to file: " + JSON_FILE_NAME + str(count) + ".json")
                 print("Page = " + str(i) + " done")
                 count += 1
                 time.sleep(10)
