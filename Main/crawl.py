@@ -15,21 +15,21 @@ count = 1
 
 days = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
-url = prefix + "?&" + fq + "&" + "sort=newest" + "&" + page + str(1) + "&" + key
+url = prefix + "?&" + fq + "&" + "sort=newest" + "&" + page + str(0) + "&" + key
 resp = requests.get(url)
 newest_year = (resp.json()["response"]["docs"][0]["pub_date"])[0:4]
-url = prefix + "?&" + fq + "&" + "sort=oldest" + "&" + page + str(1) + "&" + key
+url = prefix + "?&" + fq + "&" + "sort=oldest" + "&" + page + str(0) + "&" + key
 resp = requests.get(url)
 oldest_year = (resp.json()["response"]["docs"][0]["pub_date"])[0:4]
 
 current_year = datetime.date.today().strftime('%Y')
 current_date = ((datetime.date.today() + datetime.timedelta(days=0)).strftime('%Y%m%d'))
 
-with open("stats.csv", "w") as stats:
+with open("stats_health.csv", "w") as stats:
     stats.write("Begin Date, End Date, Hits, Pages\n")
-for year in range(int(newest_year), int(oldest_year),-1):
+for year in range(int(newest_year), int(oldest_year) - 1, -1):
     for month in range(1, 13):
-        for date in range(1, days[month - 1]+1, 7):
+        for date in range(1, days[month - 1] + 1, 7):
             mon = month
             bd = date
             ed = date
@@ -42,13 +42,13 @@ for year in range(int(newest_year), int(oldest_year),-1):
             elif (ed + 6 > days[month - 1]):
                 ed = days[month - 1]
             else:
-                ed = ed + 6
+                ed += 6
             begin_date = "begin_date=" + str(year) + str(mon) + str(bd)
             end_date = "end_date=" + str(year) + str(mon) + str(ed)
-            if(current_date < begin_date[11:]):
-                continue;
-            if(end_date[9:] > current_date):
-                end_date = current_date;
+            if (current_date < begin_date[11:]):
+                continue
+            if (end_date[9:] > current_date):
+                end_date = current_date
             url = prefix + "?&" + fq + "&" + sort + "&" + begin_date + "&" + end_date + "&" + page + "1" + "&" + key
             print(url)
             resp = requests.get(url)
@@ -66,8 +66,8 @@ for year in range(int(newest_year), int(oldest_year),-1):
                 url = prefix + "?&" + fq + "&" + sort + "&" + begin_date + "&" + end_date + "&" + page + str(
                     i) + "&" + key
                 resp = requests.get(url)
-                with open("../jsonFiles/news_desk_health_" + str(count) + ".json", 'w') as file:
-                    json.dump(resp.json(), file)
+                with open("../jsonFiles/news_desk_health_" + str(count) + ".json", 'w') as jsonFile:
+                    json.dump(resp.json(), jsonFile)
                 print("Writing to file: news_desk_health_" + str(count) + ".json")
                 print("Page = " + str(i) + " done")
                 count += 1
