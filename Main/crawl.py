@@ -3,8 +3,9 @@ import json
 import requests
 import datetime
 
+
 prefix = "http://api.nytimes.com/svc/search/v2/articlesearch.json"
-fq = "fq=news_desk:(\"Health\")"
+fq = "fq=news_desk:(\"Men%27s+Health\")"
 sort = "sort=newest"
 page = "page="
 key = "api-key=bc6f4a013b593ac80ff7f31de9c52b80:11:74279314"
@@ -21,13 +22,12 @@ newest_year = (resp.json()["response"]["docs"][0]["pub_date"])[0:4]
 url = prefix + "?&" + fq + "&" + "sort=oldest" + "&" + page + str(1) + "&" + key
 resp = requests.get(url)
 oldest_year = (resp.json()["response"]["docs"][0]["pub_date"])[0:4]
-
 current_year = datetime.date.today().strftime('%Y')
 current_date = ((datetime.date.today() + datetime.timedelta(days=0)).strftime('%Y%m%d'))
 
 with open("stats.csv", "w") as stats:
     stats.write("Begin Date, End Date, Hits, Pages\n")
-for year in range(int(newest_year), int(oldest_year),-1):
+for year in range(int(newest_year), int(oldest_year)-1,-1):
     for month in range(1, 13):
         for date in range(1, days[month - 1]+1, 7):
             mon = month
@@ -66,9 +66,9 @@ for year in range(int(newest_year), int(oldest_year),-1):
                 url = prefix + "?&" + fq + "&" + sort + "&" + begin_date + "&" + end_date + "&" + page + str(
                     i) + "&" + key
                 resp = requests.get(url)
-                with open("../jsonFiles/news_desk_health_" + str(count) + ".json", 'w') as file:
+                with open("../jsonFiles/news_desk_mens_health_" + str(count) + ".json", 'w') as file:
                     json.dump(resp.json(), file)
-                print("Writing to file: news_desk_health_" + str(count) + ".json")
+                print("Writing to file: news_desk_mens_health_" + str(count) + ".json")
                 print("Page = " + str(i) + " done")
                 count += 1
                 time.sleep(10)
