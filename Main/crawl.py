@@ -16,16 +16,16 @@ count = 1
 
 days = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
-url = prefix + "?&" + fq + "&" + "sort=newest" + "&" + page + str(1) + "&" + key
+url = prefix + "?&" + fq + "&" + "sort=newest" + "&" + page + str(0) + "&" + key
 resp = requests.get(url)
 newest_year = (resp.json()["response"]["docs"][0]["pub_date"])[0:4]
-url = prefix + "?&" + fq + "&" + "sort=oldest" + "&" + page + str(1) + "&" + key
+url = prefix + "?&" + fq + "&" + "sort=oldest" + "&" + page + str(0) + "&" + key
 resp = requests.get(url)
 oldest_year = (resp.json()["response"]["docs"][0]["pub_date"])[0:4]
 current_year = datetime.date.today().strftime('%Y')
 current_date = ((datetime.date.today() + datetime.timedelta(days=0)).strftime('%Y%m%d'))
 
-with open("stats.csv", "w") as stats:
+with open("stats_mens_health.csv", "w") as stats:
     stats.write("Begin Date, End Date, Hits, Pages\n")
 for year in range(int(newest_year), int(oldest_year)-1,-1):
     for month in range(1, 13):
@@ -58,7 +58,7 @@ for year in range(int(newest_year), int(oldest_year)-1,-1):
                 pages += 1
             if (pages > 0):
                 print("Number of pages = " + str(pages))
-            with open("stats.csv", "a") as stats:
+            with open("stats_mens_health.csv", "a") as stats:
                 stats.write(
                     str(year) + str(mon) + str(bd) + "," + str(year) + str(mon) + str(ed) + "," + str(hits) + "," + str(
                         pages) + "\n")
