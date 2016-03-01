@@ -3,11 +3,13 @@ import json
 import requests
 import datetime
 
-STATS_FILE_NAME = "stats_womens_health.csv"
-JSON_FILE_NAME = "news_desk_womens_health"
+STATS_FILE_NAME = "stats_drugs.csv"
+JSON_FILE_NAME = "search_drugs"
 
 prefix = "http://api.nytimes.com/svc/search/v2/articlesearch.json"
-fq = "fq=news_desk:(\"health\")"
+# fq = "fq=news_desk:(\"health\")"
+q = "q=drugs+health+effect"
+fq = q
 sort = "sort=newest"
 page = "page="
 # key = "api-key=bc6f4a013b593ac80ff7f31de9c52b80:11:74279314"
@@ -51,7 +53,7 @@ for year in range(int(newest_year), int(oldest_year) - 1, -1):
             if (current_date < begin_date[11:]):
                 continue
             if (end_date[9:] > current_date):
-                end_date = current_date
+                end_date = "end_date=" + current_date
             url = prefix + "?&" + fq + "&" + sort + "&" + begin_date + "&" + end_date + "&" + page + "0" + "&" + key
             print(url)
             resp = requests.get(url)
