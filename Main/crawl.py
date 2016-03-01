@@ -3,17 +3,17 @@ import json
 import requests
 import datetime
 
-STATS_FILE_NAME = "stats_drugs.csv"
-JSON_FILE_NAME = "search_drugs"
+STATS_FILE_NAME = "stats_baby.csv"
+JSON_FILE_NAME = "search_baby"
 
 prefix = "http://api.nytimes.com/svc/search/v2/articlesearch.json"
 # fq = "fq=news_desk:(\"health\")"
-q = "q=drugs+health+effect"
+q = "q=baby+health+effect"
 fq = q
 sort = "sort=newest"
 page = "page="
-# key = "api-key=bc6f4a013b593ac80ff7f31de9c52b80:11:74279314"
-key = "api-key=a52da62103b0deaf1a70d42c8ae09038:2:74279314"
+key = "api-key=bc6f4a013b593ac80ff7f31de9c52b80:11:74279314"
+#key = "api-key=a52da62103b0deaf1a70d42c8ae09038:2:74279314"
 begin_date = "begin_date=20160217"
 end_date = "end_date=20160224"
 
