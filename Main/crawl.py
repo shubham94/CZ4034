@@ -3,6 +3,7 @@ import json
 import requests
 import datetime
 
+
 STATS_FILE_NAME = "stats_baby.csv"
 JSON_FILE_NAME = "search_baby"
 
