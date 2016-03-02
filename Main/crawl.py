@@ -3,7 +3,6 @@ import json
 import requests
 import datetime
 
-
 STATS_FILE_NAME = "stats_baby.csv"
 JSON_FILE_NAME = "search_baby"
 
@@ -14,7 +13,7 @@ fq = q
 sort = "sort=newest"
 page = "page="
 key = "api-key=bc6f4a013b593ac80ff7f31de9c52b80:11:74279314"
-#key = "api-key=a52da62103b0deaf1a70d42c8ae09038:2:74279314"
+new_key = "api-key=a52da62103b0deaf1a70d42c8ae09038:2:74279314"
 begin_date = "begin_date=20160217"
 end_date = "end_date=20160224"
 
@@ -57,6 +56,7 @@ for year in range(int(newest_year), int(oldest_year) - 1, -1):
                 end_date = "end_date=" + current_date
             url = prefix + "?&" + fq + "&" + sort + "&" + begin_date + "&" + end_date + "&" + page + "0" + "&" + key
             print(url)
+            time.sleep(5)
             resp = requests.get(url)
             hits = resp.json()["response"]["meta"]["hits"]
             pages = int(hits / 10)
@@ -76,5 +76,9 @@ for year in range(int(newest_year), int(oldest_year) - 1, -1):
                     json.dump(resp.json(), jsonFile)
                 print("Writing to file: " + JSON_FILE_NAME + str(count) + ".json")
                 print("Page = " + str(i) + " done")
+                if (count % 50 == 0):
+                    temp_key = key
+                    key = new_key
+                    new_key = temp_key
                 count += 1
-                time.sleep(30)
+                time.sleep(5)
