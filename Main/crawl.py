@@ -3,12 +3,12 @@ import json
 import requests
 import datetime
 
-STATS_FILE_NAME = "stats_baby.csv"
-JSON_FILE_NAME = "search_baby"
+STATS_FILE_NAME = "stats_pregnancy.csv"
+JSON_FILE_NAME = "search_pregnancy"
 
 prefix = "http://api.nytimes.com/svc/search/v2/articlesearch.json"
 # fq = "fq=news_desk:(\"health\")"
-q = "q=baby+health+effect"
+q = "q=pregnancy"
 fq = q
 sort = "sort=newest"
 page = "page="
@@ -17,7 +17,7 @@ new_key = "api-key=a52da62103b0deaf1a70d42c8ae09038:2:74279314"
 begin_date = "begin_date=20160217"
 end_date = "end_date=20160224"
 
-count = 1
+count = 844
 
 days = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
@@ -32,7 +32,7 @@ current_date = ((datetime.date.today() + datetime.timedelta(days=0)).strftime('%
 
 with open(STATS_FILE_NAME, "w") as stats:
     stats.write("Begin Date, End Date, Hits, Pages\n")
-for year in range(int(newest_year), int(oldest_year) - 1, -1):
+for year in range(2007, int(oldest_year) - 1, -1):
     for month in range(1, 13):
         for date in range(1, days[month - 1] + 1, 7):
             mon = month
