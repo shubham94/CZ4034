@@ -3,21 +3,12 @@ import json
 import requests
 import datetime
 
-<<<<<<< HEAD
 STATS_FILE_NAME = "stats_obesity.csv"
 JSON_FILE_NAME = "search_obesity"
 
 prefix = "http://api.nytimes.com/svc/search/v2/articlesearch.json"
 # fq = "fq=news_desk:(\"health\")"
 q = "q=obesity+health"
-=======
-STATS_FILE_NAME = "stats_pregnancy.csv"
-JSON_FILE_NAME = "search_pregnancy"
-
-prefix = "http://api.nytimes.com/svc/search/v2/articlesearch.json"
-# fq = "fq=news_desk:(\"health\")"
-q = "q=pregnancy"
->>>>>>> 36e0c621ed14967c77968b024e9c1fb00f3ab149
 fq = q
 sort = "sort=newest"
 page = "page="
@@ -25,8 +16,6 @@ key1 = "api-key=bc6f4a013b593ac80ff7f31de9c52b80:11:74279314"
 key2 = "api-key=a52da62103b0deaf1a70d42c8ae09038:2:74279314"
 key3 = "api-key=04f0794217e078a662116b6a4486d18e:6:74279314"
 key = key1
-begin_date = "begin_date=20160217"
-end_date = "end_date=20160224"
 
 count = 1
 
