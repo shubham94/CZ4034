@@ -12,12 +12,14 @@ q = "q=pregnancy"
 fq = q
 sort = "sort=newest"
 page = "page="
-key = "api-key=bc6f4a013b593ac80ff7f31de9c52b80:11:74279314"
-new_key = "api-key=a52da62103b0deaf1a70d42c8ae09038:2:74279314"
+key1 = "api-key=bc6f4a013b593ac80ff7f31de9c52b80:11:74279314"
+key2 = "api-key=a52da62103b0deaf1a70d42c8ae09038:2:74279314"
+key3 = "api-key=04f0794217e078a662116b6a4486d18e:6:74279314"
+key = key1
 begin_date = "begin_date=20160217"
 end_date = "end_date=20160224"
 
-count = 844
+count = 1
 
 days = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
@@ -32,7 +34,7 @@ current_date = ((datetime.date.today() + datetime.timedelta(days=0)).strftime('%
 
 with open(STATS_FILE_NAME, "w") as stats:
     stats.write("Begin Date, End Date, Hits, Pages\n")
-for year in range(2007, int(oldest_year) - 1, -1):
+for year in range(int(newest_year), int(oldest_year) - 1, -1):
     for month in range(1, 13):
         for date in range(1, days[month - 1] + 1, 7):
             mon = month
@@ -76,9 +78,11 @@ for year in range(2007, int(oldest_year) - 1, -1):
                     json.dump(resp.json(), jsonFile)
                 print("Writing to file: " + JSON_FILE_NAME + str(count) + ".json")
                 print("Page = " + str(i) + " done")
-                if (count % 50 == 0):
-                    temp_key = key
-                    key = new_key
-                    new_key = temp_key
+                if (count % 150 == 1):
+                    key = key1
+                elif (count % 150 == 51):
+                    key = key2
+                if (count % 150 == 101):
+                    key = key3
                 count += 1
                 time.sleep(5)
