@@ -3,12 +3,12 @@ import json
 import requests
 import datetime
 
-STATS_FILE_NAME = "stats_obesity.csv"
-JSON_FILE_NAME = "search_obesity"
+STATS_FILE_NAME = "stats_health_insurance.csv"
+JSON_FILE_NAME = "search_health_insurance"
 
 prefix = "http://api.nytimes.com/svc/search/v2/articlesearch.json"
 # fq = "fq=news_desk:(\"health\")"
-q = "q=obesity+health"
+q = "q=health+insurance"
 fq = q
 sort = "sort=newest"
 page = "page="
