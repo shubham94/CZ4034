@@ -3,19 +3,19 @@ import json
 import requests
 import datetime
 
-STATS_FILE_NAME = "stats_cancer_effect.csv"
-JSON_FILE_NAME = "search_cancer_effect"
+STATS_FILE_NAME = "stats_health_insurance.csv"
+JSON_FILE_NAME = "search_health_insurance"
 
 prefix = "http://api.nytimes.com/svc/search/v2/articlesearch.json"
 # fq = "fq=news_desk:(\"health\")"
-q = "q=cancer+health+effect"
+q = "q=health+insurance"
 fq = q
 sort = "sort=newest"
 page = "page="
-# key = "api-key=bc6f4a013b593ac80ff7f31de9c52b80:11:74279314"
-key = "api-key=04f0794217e078a662116b6a4486d18e:6:74279314"
-begin_date = "begin_date=20160217"
-end_date = "end_date=20160224"
+key1 = "api-key=bc6f4a013b593ac80ff7f31de9c52b80:11:74279314"
+key2 = "api-key=a52da62103b0deaf1a70d42c8ae09038:2:74279314"
+key3 = "api-key=04f0794217e078a662116b6a4486d18e:6:74279314"
+key = key1
 
 count = 1
 
@@ -56,6 +56,7 @@ for year in range(int(newest_year), int(oldest_year) - 1, -1):
                 end_date = "end_date=" + current_date
             url = prefix + "?&" + fq + "&" + sort + "&" + begin_date + "&" + end_date + "&" + page + "0" + "&" + key
             print(url)
+            time.sleep(5)
             resp = requests.get(url)
             hits = resp.json()["response"]["meta"]["hits"]
             pages = int(hits / 10)
@@ -75,5 +76,11 @@ for year in range(int(newest_year), int(oldest_year) - 1, -1):
                     json.dump(resp.json(), jsonFile)
                 print("Writing to file: " + JSON_FILE_NAME + str(count) + ".json")
                 print("Page = " + str(i) + " done")
+                if (count % 150 == 1):
+                    key = key1
+                elif (count % 150 == 51):
+                    key = key2
+                if (count % 150 == 101):
+                    key = key3
                 count += 1
-                time.sleep(30)
+                time.sleep(5)
