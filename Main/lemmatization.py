@@ -3,6 +3,7 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 import string
 import MySQLdb
+from Utility.DBUtility import MySQL
 
 
 class lemmatiization:
@@ -21,27 +22,36 @@ class lemmatiization:
             biwords.append(word)
         return biwords
 
-    username = "root"
-    password = "12345"
-    database = "CZ4034"
-    tableName = "testRun"
+    mysql_object = MySQL()
+    database_name = "CZ4034"
 
-    # Open database connection
-    db = MySQLdb.connect("localhost", username, password, "CZ4034")
+    mysql_object.create_database(database_name)
+    tableName = "CZ4034_originial"
 
     # prepare a cursor object using cursor() method
-    cursor = db.cursor()
-    query = "select headline, lead_paragraph, keywords from CZ4034_originial"
-    sql = query.encode('utf-8')
+    sql = "SELECT DocID, headline, lead_paragraph, keywords FROM " + tableName + ";"
+    sql = sql.encode('utf-8')
     # Execute the SQL command
-    cursor.execute(sql)
     # Commit your changes in the database
-    data = cursor.fetchall()
-    print(len(data))
-    for x in data:
-        headline = x[0]
-        lead_paragraph = x[1]
-        keywords = x[2]
+    data = mysql_object.execute_query(sql)
+    # print(len(data))
+    columns = "Token TEXT," \
+              "DocID TEXT"
+
+    tableHeadline = "headlineTokens"
+    mysql_object.create_table(tableHeadline, columns)
+    tableKeywords = "keywordsTokens"
+    mysql_object.create_table(tableKeywords, columns)
+    tableLeadPara = "leadParagraphTokens"
+    mysql_object.create_table(tableLeadPara, columns)
+    tableKeywordsMulti = "keywordsMultiWord"
+    mysql_object.create_table(tableKeywordsMulti, columns)
+
+    for record in data:
+        docID = record[0]
+        headline = record[1]
+        lead_paragraph = record[2]
+        keywords = record[3]
 
         headline = headline.translate(None, string.punctuation)
         words = word_tokenize(headline)
@@ -53,12 +63,15 @@ class lemmatiization:
 
         keyword_list_grams = []
         for keyword in keywords.split(" | "):
-            keyword_list_grams.append(((" ".join(removeStopWords(keyword.split(" ")))).strip()).translate(None, string.punctuation))
+            keyword_list_grams.append(
+                ((" ".join(removeStopWords(keyword.split(" ")))).strip()).translate(None, string.punctuation))
 
-        keyword_list_grams = filter(None,keyword_list_grams)
+        keyword_list_grams = filter(None, keyword_list_grams)
         keywords_withoutStopWords = word_tokenize(" ".join(keyword_list_grams))
 
-        print(headline_withoutStopWords)
+        
+        print(x for x in headline_withoutStopWords)
+        # sql = "INSERT INTO "
         print(lead_paragraph_withoutStopWords)
         print(keyword_list_grams)
         print(keywords_withoutStopWords)

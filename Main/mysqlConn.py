@@ -1,49 +1,64 @@
 import MySQLdb, os, json
+from Utility.DBUtility import MySQL
 
-username = "root"
-password = "12345"
-database = "CZ4034"
-tableName = "CZ4034_originial"
+database_name = "CZ4034"
+table_name = "CZ4034_originial"
 
+mysql_object = MySQL()
+
+mysql_object.create_database(database_name)
 # Open database connection
-db = MySQLdb.connect("localhost", username, password, "CZ4034")
+#db = MySQLdb.connect("localhost", username, password, "CZ4034")
 
 # prepare a cursor object using cursor() method
-cursor = db.cursor()
+# cursor = db.cursor()
 
 #sql = "CREATE DATABASE IF NOT EXISTS " + database + ";"
 
-try:
+#try:
  #   cursor.execute(sql)
-    sql = "USE " + database + ";"
-    cursor.execute(sql)
-except:
-    print("error in creating the database")
-    exit(-1)
+#    sql = "USE " + database + ";"
+#    cursor.execute(sql)
+#except:
+#    print("error in creating the database")
+#    exit(-1)
 # Prepare SQL query to INSERT a record into the database.
-sql = "CREATE TABLE IF NOT EXISTS " + tableName + " (\
- DocID MEDIUMTEXT,\
- typeOfMaterial MEDIUMTEXT,\
- news_desk MEDIUMTEXT,\
- headline MEDIUMTEXT,\
- lead_paragraph MEDIUMTEXT,\
- word_count MEDIUMTEXT,\
- publication_date MEDIUMTEXT,\
- person MEDIUMTEXT,\
- keywords MEDIUMTEXT,\
- glocation MEDIUMTEXT,\
- section_name MEDIUMTEXT\
- );"
-print(sql)
+column_list = "DocID TEXT, " \
+              "typeOfMaterial TEXT, " \
+              "news_desk TEXT, " \
+              "headline MEDIUMTEXT, " \
+              "lead_paragraph MEDIUMTEXT, " \
+              "word_count TEXT,"\
+              "publication_date TEXT,"\
+              "person TEXT,"\
+              "keywords MEDIUMTEXT,"\
+              "glocation MEDIUMTEXT,"\
+              "section_name TEXT"
+mysql_object.create_table(table_name, column_list)
 
-try:
-    # Execute the SQL command
-    cursor.execute(sql)
-    # Commit your changes in the database
-    db.commit()
-except:
-    # Rollback in case there is any error
-    db.rollback()
+# sql = "CREATE TABLE IF NOT EXISTS " + tableName + " (\
+#  DocID MEDIUMTEXT,\
+#  typeOfMaterial MEDIUMTEXT,\
+#  news_desk MEDIUMTEXT,\
+#  headline MEDIUMTEXT,\
+#  lead_paragraph MEDIUMTEXT,\
+#  word_count MEDIUMTEXT,\
+#  publication_date MEDIUMTEXT,\
+#  person MEDIUMTEXT,\
+#  keywords MEDIUMTEXT,\
+#  glocation MEDIUMTEXT,\
+#  section_name MEDIUMTEXT\
+#  );"
+# print(sql)
+
+# try:
+#     # Execute the SQL command
+#     cursor.execute(sql)
+#     # Commit your changes in the database
+#     db.commit()
+# except:
+#     # Rollback in case there is any error
+#     db.rollback()
 
 # change the following path accordingly!
 path = "../jsonFiles/"
@@ -140,7 +155,7 @@ for i in os.listdir(path):
                     # print(people[:len(people)-2])
                     # print(keywords[:len(keywords)-2])
 
-                sql = "INSERT INTO " + tableName + " VALUES " \
+                sql = "INSERT INTO " + table_name + " VALUES " \
                        "(\"" + DocId + "\", " \
                        "\"" + type_of_material + "\", " \
                        "\"" + news_desk + "\", " \
@@ -155,10 +170,11 @@ for i in os.listdir(path):
                 try:
                     sql = sql.encode('utf-8')
                     print(sql)
+                    mysql_object.execute_query(sql)
                     # Execute the SQL command
-                    cursor.execute(sql)
+                    # cursor.execute(sql)
                     # Commit your changes in the database
-                    db.commit()
+                    # db.commit()
                     # print("added")
                 except TypeError as e:
                     # Rollback in case there is any error
@@ -166,4 +182,4 @@ for i in os.listdir(path):
                     continue
 print(count)
 # disconnect from server
-db.close()
+mysql_object.close_db()
