@@ -69,10 +69,20 @@ class lemmatiization:
         keyword_list_grams = filter(None, keyword_list_grams)
         keywords_withoutStopWords = word_tokenize(" ".join(keyword_list_grams))
 
-        
-        print(x for x in headline_withoutStopWords)
+        for token1, token2, token3, token4 in zip(headline_withoutStopWords, lead_paragraph_withoutStopWords, keyword_list_grams, keywords_withoutStopWords):
+            sql = "INSERT INTO " + tableHeadline + " VALUES (\"" + token1 + "\", \"" + docID + "\");"
+            mysql_object.execute_query(sql)
+            sql = "INSERT INTO " + tableLeadPara + " VALUES (\"" + token2 + "\", \"" + docID + "\");"
+            mysql_object.execute_query(sql)
+            sql = "INSERT INTO " + tableKeywordsMulti + " VALUES (\"" + token3 + "\", \"" + docID + "\");"
+            mysql_object.execute_query(sql)
+            sql = "INSERT INTO " + tableKeywords + " VALUES (\"" + token4 + "\", \"" + docID + "\");"
+            mysql_object.execute_query(sql)
+            print(docID + " completed")
+        # print(x for x in headline_withoutStopWords)
         # sql = "INSERT INTO "
-        print(lead_paragraph_withoutStopWords)
-        print(keyword_list_grams)
-        print(keywords_withoutStopWords)
-        break
+        # print(lead_paragraph_withoutStopWords)
+        # print(keyword_list_grams)
+        # print(keywords_withoutStopWords)
+        # break
+    mysql_object.close_db()

@@ -7,22 +7,7 @@ table_name = "CZ4034_originial"
 mysql_object = MySQL()
 
 mysql_object.create_database(database_name)
-# Open database connection
-#db = MySQLdb.connect("localhost", username, password, "CZ4034")
 
-# prepare a cursor object using cursor() method
-# cursor = db.cursor()
-
-#sql = "CREATE DATABASE IF NOT EXISTS " + database + ";"
-
-#try:
- #   cursor.execute(sql)
-#    sql = "USE " + database + ";"
-#    cursor.execute(sql)
-#except:
-#    print("error in creating the database")
-#    exit(-1)
-# Prepare SQL query to INSERT a record into the database.
 column_list = "DocID TEXT, " \
               "typeOfMaterial TEXT, " \
               "news_desk TEXT, " \
@@ -34,31 +19,8 @@ column_list = "DocID TEXT, " \
               "keywords MEDIUMTEXT,"\
               "glocation MEDIUMTEXT,"\
               "section_name TEXT"
+
 mysql_object.create_table(table_name, column_list)
-
-# sql = "CREATE TABLE IF NOT EXISTS " + tableName + " (\
-#  DocID MEDIUMTEXT,\
-#  typeOfMaterial MEDIUMTEXT,\
-#  news_desk MEDIUMTEXT,\
-#  headline MEDIUMTEXT,\
-#  lead_paragraph MEDIUMTEXT,\
-#  word_count MEDIUMTEXT,\
-#  publication_date MEDIUMTEXT,\
-#  person MEDIUMTEXT,\
-#  keywords MEDIUMTEXT,\
-#  glocation MEDIUMTEXT,\
-#  section_name MEDIUMTEXT\
-#  );"
-# print(sql)
-
-# try:
-#     # Execute the SQL command
-#     cursor.execute(sql)
-#     # Commit your changes in the database
-#     db.commit()
-# except:
-#     # Rollback in case there is any error
-#     db.rollback()
 
 # change the following path accordingly!
 path = "../jsonFiles/"
@@ -171,11 +133,6 @@ for i in os.listdir(path):
                     sql = sql.encode('utf-8')
                     print(sql)
                     mysql_object.execute_query(sql)
-                    # Execute the SQL command
-                    # cursor.execute(sql)
-                    # Commit your changes in the database
-                    # db.commit()
-                    # print("added")
                 except TypeError as e:
                     # Rollback in case there is any error
                     print(e.message)
