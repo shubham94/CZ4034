@@ -31,7 +31,7 @@ class lemmatiization:
 
     # prepare a cursor object using cursor() method
     cursor = db.cursor()
-    query = "select headline, lead_paragraph, keywords from testrun"
+    query = "select headline, lead_paragraph, keywords from CZ4034_originial"
     sql = query.encode('utf-8')
     # Execute the SQL command
     cursor.execute(sql)
@@ -41,7 +41,7 @@ class lemmatiization:
     for x in data:
         headline = x[0]
         lead_paragraph = x[1]
-        keywords = x[2].split(" | ")
+        keywords = x[2]
 
         headline = headline.translate(None, string.punctuation)
         words = word_tokenize(headline)
@@ -51,15 +51,15 @@ class lemmatiization:
         words = word_tokenize(lead_paragraph)
         lead_paragraph_withoutStopWords = removeStopWords(words)
 
-        keywords = keywords.translate(None, string.punctuation)
-        words = word_tokenize(keywords)
-        keywords_withoutStopWords = removeStopWords(words)
-        keywords_biWords = getBiwords(keywords_withoutStopWords)
+        keyword_list_grams = []
+        for keyword in keywords.split(" | "):
+            keyword_list_grams.append(((" ".join(removeStopWords(keyword.split(" ")))).strip()).translate(None, string.punctuation))
 
-
+        keyword_list_grams = filter(None,keyword_list_grams)
+        keywords_withoutStopWords = word_tokenize(" ".join(keyword_list_grams))
 
         print(headline_withoutStopWords)
         print(lead_paragraph_withoutStopWords)
+        print(keyword_list_grams)
         print(keywords_withoutStopWords)
-        print(keywords_biWords)
         break
