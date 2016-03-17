@@ -48,7 +48,7 @@ path = "../jsonFiles/"
 count = 0
 x = []
 for i in os.listdir(path):
-    if (i.endswith(".json")):
+    if (i.endswith("science25.json")):
         with open(path + "\\" + i) as data_file:
             print(data_file.name)
             data = json.load(data_file)
