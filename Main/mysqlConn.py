@@ -1,5 +1,5 @@
 import MySQLdb, os, json
-from Utility.DBUtility import MySQL
+from Utility.MySQL import MySQL
 
 database_name = "CZ4034"
 table_name = "CZ4034_originial"

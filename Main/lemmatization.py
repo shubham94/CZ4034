@@ -3,7 +3,7 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 import string
 import MySQLdb
-from Utility.DBUtility import MySQL
+from Utility.MySQL import MySQL
 
 
 class lemmatiization:
@@ -63,6 +63,8 @@ class lemmatiization:
 
         keyword_list_grams = []
         for keyword in keywords.split(" | "):
+            if(" " not in keyword.strip()):
+                continue
             keyword_list_grams.append(
                 ((" ".join(removeStopWords(keyword.split(" ")))).strip()).translate(None, string.punctuation))
 

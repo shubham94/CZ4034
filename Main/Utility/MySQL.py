@@ -6,7 +6,7 @@ class MySQL(object):
         self.host = "localhost"
         self.username = "root"
         self.password = ""
-        self.db = MySQLdb.connect(self.host, self.username, self.password, "information_schema")
+        self.db = MySQLdb.connect(self.host, self.username, self.password, "cz4034")
         # self.db = MySQLdb.connect(self.host, self.username, self.password, db_name)
         self.cursor = self.db.cursor()
 
