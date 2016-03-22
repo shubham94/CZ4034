@@ -14,7 +14,14 @@ class MySQL(object):
         sql = "CREATE DATABASE IF NOT EXISTS " + database_name + ";"
         try:
             self.cursor.execute(sql)
-            sql = "USE " + database_name + ";"
+            self.use_database(database_name)
+        except Exception as error:
+            print(error)
+            exit(-1)
+
+    def use_database(self, database_name):
+        sql = "USE " + database_name + ";"
+        try:
             self.cursor.execute(sql)
         except Exception as error:
             print(error)

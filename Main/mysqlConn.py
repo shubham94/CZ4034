@@ -1,4 +1,4 @@
-import MySQLdb, os, json
+import os, json
 from Utility.MySQL import MySQL
 
 database_name = "CZ4034"
