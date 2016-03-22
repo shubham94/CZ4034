@@ -2,7 +2,7 @@ import MySQLdb, os, json
 from Utility.MySQL import MySQL
 
 database_name = "CZ4034"
-table_name = "CZ4034_originial"
+table_name = "CZ4034_original"
 
 mysql_object = MySQL()
 
