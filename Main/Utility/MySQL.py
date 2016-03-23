@@ -36,7 +36,7 @@ class MySQL(object):
         try:
             self.cursor.execute(sql)
 
-            if (sql[:6].lower() == "select"):
+            if (sql[:6].lower() == "select" or sql[1:7].lower() == "select"):
                 # print("in")
                 return self.cursor.fetchall()
             self.db.commit()
