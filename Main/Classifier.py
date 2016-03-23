@@ -1,3 +1,5 @@
+from stringold import maketrans
+
 from Utility.MySQL import MySQL
 from textblob.classifiers import NaiveBayesClassifier
 from nltk.corpus import stopwords
@@ -53,16 +55,17 @@ for record in data:
     text = text.translate(None, string.punctuation)
     words = word_tokenize(text)
     text = " ".join(removeStopWords(words))
-    train_data.append((text.strip(), category))
+    train_data.append((text.strip().decode('utf-8'), category))
 
 print(train_data)
 classification = NaiveBayesClassifier(train_data)
+print("classified")
 
-sql = "SELECT Doc_ID, lead_paragraph FROM " + table_name + " WHERE news_desk = \"\" AND section_name = \"\" LIMIT 500;"
+sql = "SELECT DocID, lead_paragraph FROM " + table_name + " WHERE news_desk = \"\" AND section_name = \"\" LIMIT 500;"
 
 data = mysql_object.execute_query(sql)
 
 for record in data:
     doc_id = record[0]
     text = record[1]
-    print(doc_id + " " + classification.classify(text))
+    print(doc_id + " " + classification.classify(text.strip().decode('utf-8')))
