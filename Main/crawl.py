@@ -6,7 +6,7 @@ import datetime
 from Main.Utility.MySQL import MySQL
 
 
-class crawl:
+class crawl(object):
     def dynamic_crawl(self, crawl_term):
         mysql_object = MySQL()
 
@@ -52,16 +52,12 @@ class crawl:
         count_num = data[0][1]
         JSON_FILE_NAME = "fq_" + file_name
 
-        current_year = datetime.date.today().strftime('%Y')
         current_date_format = ((datetime.date.today() + datetime.timedelta(days=0)).strftime('%Y-%m-%d'))
         if ((str(last_date) == current_date_format)):
             return ("No new articles found")
         else:
             current_date = ((datetime.date.today() + datetime.timedelta(days=0)).strftime('%Y%m%d'))
             prefix = "http://api.nytimes.com/svc/search/v2/articlesearch.json"
-            # fq = "fq=news_desk:(\"health\")"
-            # q = "q=health+insurance"
-            # fq = "fq=news_desk:(\"" + crawl_term + "\")"
             sort = "sort=newest"
             page = "page="
             key1 = "api-key=bc6f4a013b593ac80ff7f31de9c52b80:11:74279314"
