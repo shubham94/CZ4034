@@ -1,8 +1,8 @@
-import MySQLdb, os, json
+import os, json
 from Utility.MySQL import MySQL
 
 database_name = "CZ4034"
-table_name = "CZ4034_originial"
+table_name = "CZ4034_original"
 
 mysql_object = MySQL()
 
@@ -73,16 +73,7 @@ for i in os.listdir(path):
                 if ('word_count' in current_response and current_response["word_count"] is not None):
                     word_count = str(current_response["word_count"])
 
-                if ((data["response"]['docs'][j]["lead_paragraph"]) is not None):
-                    lead_paragraph = data["response"]['docs'][j]["lead_paragraph"].replace("\"", "\\\"")
-                elif ((data["response"]['docs'][j]["snippet"]) is not None):
-                    lead_paragraph = data["response"]['docs'][j]["snippet"].replace("\"", "\\\"")
-                elif ((data["response"]['docs'][j]["abstract"]) is not None):
-                    lead_paragraph = data["response"]['docs'][j]["abstract"].replace("\"", "\\\"")
-                else:
-                    lead_paragraph = headline
-
-                # checking if lead paragraph exists
+              # checking if lead paragraph exists
                 if ('lead_paragraph' in current_response and current_response["lead_paragraph"] is not None):
                     lead_paragraph += current_response["lead_paragraph"].replace("\"", "\\\"") + " | "
                 if ('snippet' in current_response and current_response["lead_paragraph"] != current_response["snippet"] and current_response["snippet"] is not None):
