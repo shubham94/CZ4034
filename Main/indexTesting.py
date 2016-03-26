@@ -4,20 +4,9 @@ solr = pysolr.Solr('http://localhost:8983/solr/test', timeout=10)
 
 # If sending JSON files directly into solr
 
-"""
+
 # How you'd index data.
-solr.add([
-    {
-        "id": "doc_1",
-        "title": "A test document",
-    },
-    {
-        "id": "doc_2",
-        "title": "The Banana: Tasty or Dangerous?",
-    },
-])
-
-
+solr.delete(q='*:*')
 testJson = {
     "type_of_material": "Blog",
         "blog": [],
@@ -245,12 +234,15 @@ testJson = {
         "section_name": "Health"
       }
 
-solr.add([testJson])
+test = {"type_of_material" :testJson["type_of_material"] , "news_desk":testJson["news_desk"] }
+test["pub"] = testJson["pub_date"]
+print test
+solr.add([test])
 solr.commit()
-"""
+
 # Later, searching is easy. In the simple case, just a plain Lucene-style
 # query is fine.
-results = solr.search('190')
+results = solr.search('*')
 for result in results:
     print(result)
 
