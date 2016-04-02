@@ -1,7 +1,10 @@
-import pysolr, os, json
+from urllib2 import urlopen
 
+import pysolr, os, json
+import simplejson
 solr = pysolr.Solr('http://localhost:8983/solr/test', timeout=10)
 
+"""
 #Delete existing indexed json files in solr
 solr.delete(q='*:*')
 
@@ -22,10 +25,10 @@ for i in os.listdir(path):
                 current_response = data["response"]["docs"][j]
                 DocId = current_response["_id"]
                 if (DocId not in x):
+                    jsondata["docID"] = DocId
                     x.append(DocId)
                     count += 1
                 else:
-                    jsondata["_id"] = DocId
                     continue
                 print current_response
                 # checking if news desk exists
@@ -46,6 +49,28 @@ for i in os.listdir(path):
                 solr.add([jsondata])
             solr.commit()
 
-results = solr.search('*')
-for result in results:
+"""
+conn = urlopen('http://localhost:8983/solr/test/select?q=%2Bkeywords:*\:*Obesity*+%2Bheadline:*\:*Obesity*&wt=json&rows=15')
+
+rsp = simplejson.load(conn)
+print "keywords:\n"
+for result in rsp["response"]["docs"]:
     print(result)
+
+#conn = urlopen('http://localhost:8983/solr/test/select?q=keywords:*\:*Obesity*&wt=json&rows=15&fl=keywords')
+
+conn = urlopen('http://localhost:8983/solr/test/select?q=%2Bheadline:*\:*Obesity*+%2Bkeywords:*\:*Obesity*&wt=json&rows=15')
+rsp = simplejson.load(conn)
+print "headline :\n"
+for result in rsp["response"]["docs"]:
+    print(result)
+
+#Multi word query check
+conn = urlopen('http://localhost:8983/solr/test/select?q=headline:*\:\"Obesity+Research\"&wt=json&rows=15')
+rsp = simplejson.load(conn)
+print rsp
+print "Multi Word :\n"
+for result in rsp["response"]["docs"]:
+    print(result)
+
+
