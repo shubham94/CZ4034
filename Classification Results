@@ -4,66 +4,67 @@ VECTORIZER : COUNT VECTORIZER
 Travel     : 22/25
 Dining     : 20/25
 Politics   : 21/23
-
+F1 Score   : 0.874821937322
 _______________________
 MODEL      : SVM
 VECTORIZER : TFIDF VECTORIZER
 Travel     : 17/25
 Dining     : 22/25
 Politics   : 22/23
-
+F1 Score   : 0.844851290685
 _______________________
 MODEL      : LOGISTIC REGRESSION
 VECTORIZER : COUNT VECTORIZER
 Travel     : 20/25
 Dining     : 21/25
 Politics   : 22/23
-
+F1 Score   : 0.874064996369
 _______________________
 MODEL      : LOGISTIC REGRESSION
 VECTORIZER : TFIDF VECTORIZER
 Travel     : 20/25
 Dining     : 21/25
 Politics   : 22/23
-
+F1 Score   : 0.874064996369
 _______________________
 MODEL      : GAUSSIAN NB
 VECTORIZER : COUNT VECTORIZER
 Travel     : 13/25
 Dining     : 20/25
 Politics   : 22/23
-
+F1 Score   : 0.751133098123
 _______________________
 MODEL      : GAUSSIAN NB
 VECTORIZER : TFIDF VECTORIZER
 Travel     : 14/25
 Dining     : 20/25
 Politics   : 21/23
-
+F1 Score   : 0.756349482695
 _______________________
 MODEL      : MULTINOMIAL NB
 VECTORIZER : COUNT VECTORIZER
 Travel     : 17/25
 Dining     : 22/25
 Politics   : 22/23
-
+F1 Score   : 0.843500422909
 _______________________
 MODEL      : MULTINOMIAL NB
 VECTORIZER : TFIDF VECTORIZER
 Travel     : 19/25
 Dining     : 21/25
 Politics   : 22/23
-
+F1 Score   : 0.858835470667
 _______________________
 MODEL      : BERNOULLI NB
 VECTORIZER : COUNT VECTORIZER
 Travel     : 25/25
 Dining     : 10/25
 Politics   : 22/23
-
+F1 Score   : 0.766256422054
 _______________________
 MODEL      : BERNOULLI NB
 VECTORIZER : TFIDF VECTORIZER
 Travel     : 25/25
 Dining     : 10/25
 Politics   : 22/23
+F1 Score   : 0.766256422054
