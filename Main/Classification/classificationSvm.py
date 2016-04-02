@@ -5,6 +5,7 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.naive_bayes import BernoulliNB
 from sklearn import feature_extraction
 import string
+from sklearn.metrics import f1_score
 from Main.Utility.MySQL import MySQL
 from Main.lemmatization import lemmatization
 
@@ -84,13 +85,36 @@ for counter_model in range(0, 5):
         travel = 0
         dining = 0
         politics = 0
+        y_true = []
+        y_pred = []
         for i in predicted:
-            if (j > 0 and j < 26 and i == "Travel"):
-                travel += 1
-            elif (j > 25 and j < 51 and i == "Dining"):
-                dining += 1
-            elif (j > 50 and j < 73 and i == "Politics"):
-                politics += 1
+            if (j > 0 and j < 26):
+                if (i == "Travel"):
+                    travel += 1
+                    y_pred.append(0)
+                elif (i == "Dining"):
+                    y_pred.append(1)
+                else:
+                    y_pred.append(2)
+                y_true.append(0)
+            elif (j > 25 and j < 51):
+                if (i == "Dining"):
+                    dining += 1
+                    y_pred.append(1)
+                elif (i == "Travel"):
+                    y_pred.append(0)
+                else:
+                    y_pred.append(2)
+                y_true.append(1)
+            elif (j > 50 and j < 73):
+                if (i == "Politics"):
+                    politics += 1
+                    y_pred.append(2)
+                elif (i == "Travel"):
+                    y_pred.append(0)
+                else:
+                    y_pred.append(1)
+                y_true.append(2)
             j += 1
         print("_______________________")
         print("MODEL      : " + model_used[counter_model])
@@ -98,4 +122,5 @@ for counter_model in range(0, 5):
         print("Travel     : " + str(travel) + "/25")
         print("Dining     : " + str(dining) + "/25")
         print("Politics   : " + str(politics) + "/23")
-        print
+        print("F1 Score   : " + str(f1_score(y_true, y_pred, average='weighted')))
+# Need to check which is better. average = None, 'binary' (default), 'micro', 'macro', 'samples', 'weighted'
