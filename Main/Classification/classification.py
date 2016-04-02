@@ -3,6 +3,13 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import GaussianNB
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.naive_bayes import BernoulliNB
+
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import BaggingClassifier
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.ensemble import VotingClassifier
+
 from sklearn import feature_extraction
 import string
 from sklearn.metrics import f1_score
@@ -11,7 +18,7 @@ from Main.lemmatization import lemmatization
 
 lem = lemmatization()
 database_name = "cz4034"
-table_name = "CZ4034_Originial"
+table_name = "CZ4034_Original"
 mysql_object = MySQL()
 mysql_object.use_database(database_name)
 
@@ -64,16 +71,24 @@ model2 = LogisticRegression()
 model3 = GaussianNB()
 model4 = MultinomialNB()
 model5 = BernoulliNB()
+model6 = RandomForestClassifier(n_estimators=50)
+model7 = BaggingClassifier(model2, n_estimators=50)
+model8 = GradientBoostingClassifier(loss='deviance', n_estimators=100)
+model9 = VotingClassifier(estimators=[("SVM", model1), ("LR", model2), ("Gauss", model3), ("Multinom", model4), ("Bernoulli", model5),
+                                      ("RandomForest", model6), ("Bagging", model7), ("GB", model8)], voting='hard')
+model10 = VotingClassifier(estimators=[("SVM", model1), ("LR", model2), ("Gauss", model3), ("Multinom", model4), ("Bernoulli", model5), ("RandomForest", model6), ("Bagging", model7), ("GB", model8)], voting='hard', weights=[1, 1, 1, 1, 1, 2, 2, 0])
 
 cv1 = feature_extraction.text.CountVectorizer(vocabulary=dict)
 cv2 = feature_extraction.text.TfidfVectorizer(vocabulary=dict)
 
-model_used = ["SVM", "LOGISTIC REGRESSION", "GAUSSIAN NB", "MULTINOMIAL NB", "BERNOULLI NB"]
+model_used = ["SVM", "LOGISTIC REGRESSION", "GAUSSIAN NB",
+              "MULTINOMIAL NB", "BERNOULLI NB", "RANDOM FOREST", "BAGGING", "GRADIENT",
+              "Voting", "Voting With Weights"]
 cv_used = ["COUNT VECTORIZER", "TFIDF VECTORIZER"]
-model_list = [model1, model2, model3, model4, model5]
+model_list = [model1, model2, model3, model4, model5, model6, model7, model8, model9, model10]
 cv_list = [cv1, cv2]
-for counter_model in range(0, 5):
-    for counter_cv in range(0, 2):
+for counter_model in range(0, len(model_list)):
+    for counter_cv in range(0, len(cv_list)):
         model = model_list[counter_model]
         cv = cv_list[counter_cv]
         X = cv.fit_transform(train_data).toarray()

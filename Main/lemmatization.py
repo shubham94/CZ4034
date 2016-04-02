@@ -2,6 +2,7 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
 
+
 class lemmatization(object):
     def __init__(self):
         self.lmtzr = WordNetLemmatizer()
@@ -21,7 +22,7 @@ class lemmatization(object):
             biwords.append(word)
         return biwords
 
-    def lemmatizeWord(self,lst):
+    def lemmatizeWord(self, lst):
         lemmatized_list = []
         for item in lst:
             lemmatized_list.append(self.lmtzr.lemmatize(item))
