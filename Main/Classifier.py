@@ -5,6 +5,7 @@ from textblob.classifiers import NaiveBayesClassifier
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 import string
+from sklearn.linear_model import LinearRegression
 
 def removeStopWords(words):
     line = []
@@ -22,13 +23,13 @@ mysql_object.use_database(database_name)
 
 sql = "(SELECT lead_paragraph, news_desk FROM " + table_name + " WHERE news_desk LIKE \"%fitness\" LIMIT 50) " \
       "UNION " \
-      "(SELECT lead_paragraph, news_desk FROM " + table_name + " WHERE news_desk LIKE \"health\" LIMIT 50) " \
+      "(SELECT lead_paragraph, news_desk FROM " + table_name + " WHERE news_desk LIKE \"Culture\" LIMIT 50) " \
       "UNION " \
       "(SELECT lead_paragraph, news_desk FROM " + table_name + " WHERE news_desk LIKE \"women%\" LIMIT 50) " \
       "UNION " \
       "(SELECT lead_paragraph, news_desk FROM " + table_name + " WHERE news_desk LIKE \"men%\" LIMIT 50) " \
       "UNION " \
-      "(SELECT lead_paragraph, news_desk FROM " + table_name + " WHERE news_desk LIKE \"travel\" LIMIT 50);"
+      "(SELECT lead_paragraph, news_desk FROM " + table_name + " WHERE news_desk LIKE \"RealEstate\" LIMIT 50);"
 
 sql = sql.encode('utf-8')
 # print(sql)
@@ -41,14 +42,14 @@ for record in data:
     text = record[0]
     category = record[1]
 
-    if(category.lower() == "health"):
-        category = "Health"
+    if(category.lower() == "culture"):
+        category = "Culture"
     elif(category[:5].lower() == "women"):
         category = "Women's Health"
     elif(category[:3].lower() == "men"):
         category = "Men's Health"
-    elif(category.lower() == "travel"):
-        category = "Travel and Health"
+    elif(category.lower() == "realestate"):
+        category = "Real Estate"
     else:
         category = "Fitness"
 
