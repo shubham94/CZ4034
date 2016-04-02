@@ -30,12 +30,8 @@ for record in data:
         categ.append('Travel')
     elif (ca.lower() == "dining"):
         categ.append('Dining')
-    elif (ca[:3].lower() == "men"):
-        categ.append('Men\'s Health')
     elif (ca.lower() == "politics"):
         categ.append('Politics')
-    else:
-        categ.append('Fitness')
 
     d = record[0].lower()
     d = d.translate(None, string.punctuation)
