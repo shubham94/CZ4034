@@ -2,7 +2,7 @@ import pysolr, os, json
 
 solr = pysolr.Solr('http://localhost:8983/solr/test', timeout=10)
 
-#Delete existing indexed json files in solr
+# Delete existing indexed json files in solr
 solr.delete(q='*:*')
 
 # If sending JSON files directly into solr
@@ -12,11 +12,13 @@ count = 0
 x = []
 for i in os.listdir(path):
     if (i.endswith(".json")):
+
         with open(path + i) as data_file:
-            #if(os.stat(data_file).st_size == 0):
+            # if(os.stat(data_file).st_size == 0):
             #    continue
             print(data_file.name)
             data = json.load(data_file)
+
             for j in range(len(data["response"]["docs"])):
                 jsondata = {}
                 current_response = data["response"]["docs"][j]
@@ -28,7 +30,7 @@ for i in os.listdir(path):
                     count += 1
                 else:
                     continue
-                #print current_response
+                # print current_response
                 # checking if news desk exists
                 if ('news_desk' in current_response and current_response["news_desk"] is not None):
                     jsondata["news_desk"] = current_response["news_desk"]
@@ -43,7 +45,7 @@ for i in os.listdir(path):
 
                 if ('keywords' in current_response and current_response["keywords"] is not None):
                     jsondata["keywords"] = current_response["keywords"]
-                #print jsondata
+                # print jsondata
                 solr.add([jsondata])
             solr.commit()
 
