@@ -7,12 +7,11 @@ from sklearn.naive_bayes import BernoulliNB
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import BaggingClassifier
 from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.ensemble import AdaBoostClassifier
 from sklearn.ensemble import VotingClassifier
 
 from sklearn import feature_extraction
 import string
-from sklearn.metrics import f1_score
+from sklearn.metrics import precision_recall_fscore_support
 from Main.Utility.MySQL import MySQL
 from Main.lemmatization import lemmatization
 
@@ -63,8 +62,17 @@ sql = "(SELECT lead_paragraph, news_desk FROM " + table_name + " WHERE news_desk
 sql = sql.encode('utf-8')
 data = mysql_object.execute_query(sql)
 test_data = []
+test_categ = []
 for record in data:
     test_data.append(record[0])
+    ca = record[1]
+    if (ca.lower() == "travel"):
+        test_categ.append('Travel')
+    elif (ca.lower() == "dining"):
+        test_categ.append('Dining')
+    elif (ca.lower() == "politics"):
+        test_categ.append('Politics')
+
 
 model1 = SVC(kernel='linear', C=1, gamma=1)
 model2 = LogisticRegression()
@@ -96,14 +104,14 @@ for counter_model in range(0, len(model_list)):
         model.score(X, categ)
         Y = cv.fit_transform(test_data).toarray()
         predicted = model.predict(Y)
-        j = 1
+        j = 0
         travel = 0
         dining = 0
         politics = 0
         y_true = []
         y_pred = []
         for i in predicted:
-            if (j > 0 and j < 26):
+            if (test_categ[j] == "Travel"):
                 if (i == "Travel"):
                     travel += 1
                     y_pred.append(0)
@@ -112,7 +120,7 @@ for counter_model in range(0, len(model_list)):
                 else:
                     y_pred.append(2)
                 y_true.append(0)
-            elif (j > 25 and j < 51):
+            elif (test_categ[j] == "Dining"):
                 if (i == "Dining"):
                     dining += 1
                     y_pred.append(1)
@@ -121,7 +129,7 @@ for counter_model in range(0, len(model_list)):
                 else:
                     y_pred.append(2)
                 y_true.append(1)
-            elif (j > 50 and j < 73):
+            elif (test_categ[j] == "Politics"):
                 if (i == "Politics"):
                     politics += 1
                     y_pred.append(2)
@@ -131,11 +139,15 @@ for counter_model in range(0, len(model_list)):
                     y_pred.append(1)
                 y_true.append(2)
             j += 1
+        score = precision_recall_fscore_support(y_true, y_pred, average='weighted')
         print("_______________________")
-        print("MODEL      : " + model_used[counter_model])
-        print("VECTORIZER : " + cv_used[counter_cv])
-        print("Travel     : " + str(travel) + "/25")
-        print("Dining     : " + str(dining) + "/25")
-        print("Politics   : " + str(politics) + "/23")
-        print("F1 Score   : " + str(f1_score(y_true, y_pred, average='weighted')))
+        print("MODEL      :  " + model_used[counter_model])
+        print("VECTORIZER :  " + cv_used[counter_cv])
+        print("Travel     :  %d/25" % (travel))
+        print("Dining     :  %d/25" % (dining))
+        print("Politics   :  %d/23" % (politics))
+        print("Precision  :  %.5f" % (score[0]))
+        print("Recall     :  %.5f" % (score[1]))
+        print("F(1) Score :  %.5f" % ((score[1]*score[0]/(score[1]+score[0]))*2))
+        print("F(W) Score :  %.5f" % (score[2]))
 # Need to check which is better. average = None, 'binary' (default), 'micro', 'macro', 'samples', 'weighted'
