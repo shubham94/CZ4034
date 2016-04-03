@@ -50,8 +50,9 @@ for i in os.listdir(path):
             solr.commit()
 
 """
-conn = urlopen('http://localhost:8983/solr/test/select?q=%2Bkeywords:*\:*Obesity*+%2Bheadline:*\:*Obesity*&wt=json&rows=15')
 
+#fields 'or'
+conn = urlopen('http://localhost:8983/solr/test/select?q=keywords:*\:*Obesity*+keywords:*\:*Heart*&wt=json&rows=15')
 rsp = simplejson.load(conn)
 print "keywords:\n"
 for result in rsp["response"]["docs"]:
@@ -59,18 +60,24 @@ for result in rsp["response"]["docs"]:
 
 #conn = urlopen('http://localhost:8983/solr/test/select?q=keywords:*\:*Obesity*&wt=json&rows=15&fl=keywords')
 
-conn = urlopen('http://localhost:8983/solr/test/select?q=%2Bheadline:*\:*Obesity*+%2Bkeywords:*\:*Obesity*&wt=json&rows=15')
+#fields 'and'
+conn = urlopen('http://localhost:8983/solr/test/select?q=%2Bheadline:*\:*Research*+%2Bkeywords:*\:*Obesity*&wt=json&rows=15')
 rsp = simplejson.load(conn)
 print "headline :\n"
 for result in rsp["response"]["docs"]:
     print(result)
 
-#Multi word query check
-conn = urlopen('http://localhost:8983/solr/test/select?q=headline:*\:\"Obesity+Research\"&wt=json&rows=15')
+
+#phrase + multi field query
+conn = urlopen('http://localhost:8983/solr/test/select?q=headline:*\:\"fat+stigma\"&keywords:*\:*obesity*&wt=json&rows=15')
 rsp = simplejson.load(conn)
-print rsp
-print "Multi Word :\n"
+print "obesity research :\n"
 for result in rsp["response"]["docs"]:
     print(result)
 
-
+#Multiple phrases Query
+conn = urlopen('http://localhost:8983/solr/test/select?q=headline:*\:\"is+leaving\"&headline:*\:\"obesity+research\"&wt=json&rows=15')
+rsp = simplejson.load(conn)
+print "is leaving :\n"
+for result in rsp["response"]["docs"]:
+    print(result)
