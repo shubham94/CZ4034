@@ -20,15 +20,13 @@ mysql_object = MySQL()
 
 mysql_object.use_database(database_name)
 
-sql = "(SELECT lead_paragraph, news_desk FROM " + table_name + " WHERE news_desk LIKE \"%fitness\" LIMIT 50) " \
+sql = "(SELECT lead_paragraph, news_desk FROM " + table_name + " WHERE news_desk LIKE \"travel\" LIMIT 50) " \
       "UNION " \
-      "(SELECT lead_paragraph, news_desk FROM " + table_name + " WHERE news_desk LIKE \"health\" LIMIT 50) " \
+      "(SELECT lead_paragraph, news_desk FROM " + table_name + " WHERE news_desk LIKE \"dining\" LIMIT 50) " \
       "UNION " \
-      "(SELECT lead_paragraph, news_desk FROM " + table_name + " WHERE news_desk LIKE \"women%\" LIMIT 50) " \
+      "(SELECT lead_paragraph, news_desk FROM " + table_name + " WHERE news_desk LIKE \"politics\" LIMIT 50) " \
       "UNION " \
-      "(SELECT lead_paragraph, news_desk FROM " + table_name + " WHERE news_desk LIKE \"men%\" LIMIT 50) " \
-      "UNION " \
-      "(SELECT lead_paragraph, news_desk FROM " + table_name + " WHERE news_desk LIKE \"travel\" LIMIT 50);"
+      "(SELECT lead_paragraph, news_desk FROM " + table_name + " WHERE news_desk LIKE \"business\" LIMIT 50);"
 
 sql = sql.encode('utf-8')
 # print(sql)
@@ -41,16 +39,14 @@ for record in data:
     text = record[0]
     category = record[1]
 
-    if(category.lower() == "health"):
-        category = "Health"
-    elif(category[:5].lower() == "women"):
-        category = "Women's Health"
-    elif(category[:3].lower() == "men"):
-        category = "Men's Health"
-    elif(category.lower() == "travel"):
-        category = "Travel and Health"
-    else:
-        category = "Fitness"
+    if(category.lower() == "travel"):
+        category = 0
+    elif(category[:5].lower() == "dining"):
+        category = 1
+    elif(category[:3].lower() == "politics"):
+        category = 2
+    elif(category.lower() == "business"):
+        category = 3
 
     text = text.translate(None, string.punctuation)
     words = word_tokenize(text)

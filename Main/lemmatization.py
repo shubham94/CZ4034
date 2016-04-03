@@ -1,89 +1,29 @@
 import nltk
 from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
-import string
-from Utility.MySQL import MySQL
+from nltk.stem.wordnet import WordNetLemmatizer
 
 
-class lemmatiization:
-    def removeStopWords(words):
+class lemmatization(object):
+    def __init__(self):
+        self.lmtzr = WordNetLemmatizer()
+        self.stop_words = set(stopwords.words("english"))
+
+    def removeStopWords(self, words):
         line = []
-        stop_words = set(stopwords.words("english"))
         for w in words:
-            if w not in stop_words:
+            if w not in self.stop_words:
                 line.append(w)
         return line
 
-    def getBiwords(words):
+    def getBiwords(self, words):
         bigrams_val = nltk.bigrams(words)
         biwords = []
         for word in bigrams_val:
             biwords.append(word)
         return biwords
 
-    mysql_object = MySQL()
-    database_name = "CZ4034"
-
-    mysql_object.create_database(database_name)
-    tableName = "CZ4034_originial"
-
-    # prepare a cursor object using cursor() method
-    sql = "SELECT DocID, headline, lead_paragraph, keywords FROM " + tableName + ";"
-    sql = sql.encode('utf-8')
-    # Execute the SQL command
-    # Commit your changes in the database
-    data = mysql_object.execute_query(sql)
-    # print(len(data))
-    columns = "Token TEXT," \
-              "DocID TEXT"
-
-    tableHeadline = "headlineTokens"
-    mysql_object.create_table(tableHeadline, columns)
-    tableKeywords = "keywordsTokens"
-    mysql_object.create_table(tableKeywords, columns)
-    tableLeadPara = "leadParagraphTokens"
-    mysql_object.create_table(tableLeadPara, columns)
-    tableKeywordsMulti = "keywordsMultiWord"
-    mysql_object.create_table(tableKeywordsMulti, columns)
-
-    for record in data:
-        docID = record[0]
-        headline = record[1]
-        lead_paragraph = record[2]
-        keywords = record[3]
-
-        headline = headline.translate(None, string.punctuation)
-        words = word_tokenize(headline)
-        headline_withoutStopWords = removeStopWords(words)
-
-        lead_paragraph = lead_paragraph.translate(None, string.punctuation)
-        words = word_tokenize(lead_paragraph)
-        lead_paragraph_withoutStopWords = removeStopWords(words)
-
-        keyword_list_grams = []
-        for keyword in keywords.split(" | "):
-            if(" " not in keyword.strip()):
-                continue
-            keyword_list_grams.append(
-                ((" ".join(removeStopWords(keyword.split(" ")))).strip()).translate(None, string.punctuation))
-
-        keyword_list_grams = filter(None, keyword_list_grams)
-        keywords_withoutStopWords = word_tokenize(" ".join(keyword_list_grams))
-
-        for token1, token2, token3, token4 in zip(headline_withoutStopWords, lead_paragraph_withoutStopWords, keyword_list_grams, keywords_withoutStopWords):
-            sql = "INSERT INTO " + tableHeadline + " VALUES (\"" + token1 + "\", \"" + docID + "\");"
-            mysql_object.execute_query(sql)
-            sql = "INSERT INTO " + tableLeadPara + " VALUES (\"" + token2 + "\", \"" + docID + "\");"
-            mysql_object.execute_query(sql)
-            sql = "INSERT INTO " + tableKeywordsMulti + " VALUES (\"" + token3 + "\", \"" + docID + "\");"
-            mysql_object.execute_query(sql)
-            sql = "INSERT INTO " + tableKeywords + " VALUES (\"" + token4 + "\", \"" + docID + "\");"
-            mysql_object.execute_query(sql)
-            print(docID + " completed")
-        # print(x for x in headline_withoutStopWords)
-        # sql = "INSERT INTO "
-        # print(lead_paragraph_withoutStopWords)
-        # print(keyword_list_grams)
-        # print(keywords_withoutStopWords)
-        # break
-    mysql_object.close_db()
+    def lemmatizeWord(self, lst):
+        lemmatized_list = []
+        for item in lst:
+            lemmatized_list.append(self.lmtzr.lemmatize(item))
+        return lemmatized_list
